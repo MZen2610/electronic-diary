@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  </head>
+
+  <body>
+    <ul class="nav" style="background-color: #e3f2fd;">
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url "classes" %}">На главную</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url "class_info" letter=class_letter year=class_year %}">К классу</a>
+      </li>
+    </ul>
+    <div class="container">
+      <h2 class="mt-2 mb-4">Расписание занятий {{class_year}}{{class_letter}} класса</h2>
+      <table class="table table-striped mt-2 mb-4">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Дата</th>
+            {% for timeslot in timeslots %}
+              <th scope="col" style="text-align:center;">{{timeslot}}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for day, lessons in schedule.items %}
+            <tr>
+              <th scope="row">{{day}}</th>
+              {% for lesson in lessons %}
+                <td >
+                  {% if lesson %}
+                    {{lesson.subject.title}}<br>
+                    {{lesson.room}} каб.<br>
+                    <a href="{% url "journal" letter=class_letter year=class_year subject_id=lesson.subject.id%}">оценки</a>
+                  {% else %}{% endif %}
+                </td>
+              {% empty%}
+                <td colspan="{{timeslots|length}}" style="text-align:center;">Нет занятий</td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="text-center">
+        <a href="{% url "schedule" letter=class_letter year=class_year%}?week={{previous_week.week}}&year={{previous_week.year}}"><== Предыдущая неделя</a>
+        <a href="{% url "schedule" letter=class_letter year=class_year%}?week={{next_week.week}}&year={{next_week.year}}">Следующая неделя ==></a>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </body>
+{# 
+</html>

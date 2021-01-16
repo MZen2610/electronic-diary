@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  </head>
+
+  <body>
+    <ul class="nav" style="background-color: #e3f2fd;">
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url "classes" %}">На главную</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url "class_info" letter=schoolkid.group_letter year=schoolkid.year_of_study %}">К классу</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url "schedule" letter=schoolkid.group_letter year=schoolkid.year_of_study %}">К расписанию</a>
+      </li>
+    </ul>
+    <div class="container">
+        <h2 class="mt-2 mb-4">Страница ученика {{schoolkid.full_name}}</h2>
+        <h3 class="mt-2 mb-4">Успеваемость</h3>
+        <table class="table table-striped mt-2">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Название предмета</th>
+              {% for day in days %}
+                <th scope="col" style="text-align:center;">{{day}}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for subject, subject_marks in marks.items %}
+                <tr>
+                    <th scope="row">{{subject.title}} <a href="{% url "journal" letter=schoolkid.group_letter year=schoolkid.year_of_study subject_id=subject.id%}">журнал</a></th>
+                    {% for day, marks_that_day in subject_marks.items %}
+                        <td style="text-align:center;">{% for mark in marks_that_day %}{{mark.points}} {%endfor%}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="text-center mb-4">
+          <a href="{% url "schoolkid" schoolkid_id=schoolkid.id %}?week={{previous_week.week}}&year={{previous_week.year}}"><== Предыдущая неделя</a>
+          <a href="{% url "schoolkid" schoolkid_id=schoolkid.id %}?week={{next_week.week}}&year={{next_week.year}}">Следующая неделя ==></a>
+        </div>
+        {% if all_commendations %}
+          <h2 class="mt-2 mb-4">Похвалы от учителей</h2>
+          <table class="table table-striped mt-2 mb-4">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Дата</th>
+                <th scope="col">Учитель</th>
+                <th scope="col">Предмет</th>
+                <th scope="col">Текст</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for commendation in all_commendations %}
+                  <tr>
+                      <th scope="row">{{commendation.created|date:"d/m Y"}}</th>
+                      <td>{{commendation.teacher.full_name}}</td>
+                      <td>{{commendation.subject.title}}</td>
+                      <td>{{commendation.text}}</td>
+                  </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+        {% if all_chastisements %}
+          <h2  class="mt-2 mb-4">Замечания от учителей</h2>
+          <table class="table table-striped mt-2 mb-4">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Дата</th>
+                <th scope="col">Учитель</th>
+                <th scope="col">Предмет</th>
+                <th scope="col">Текст</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for chastisement in all_chastisements %}
+                <tr>
+                  <th scope="row">{{chastisement.created|date:"d/m Y"}}</th>
+                  <td>{{chastisement.teacher.full_name}}</td>
+                  <td>{{chastisement.subject.title}}</td>
+                  <td>{{chastisement.text}}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </body>
+</html>
