@@ -162,6 +162,7 @@ $RECYCLE.BIN/
 ######################
 *.sql
 *.sqlite
+*.sqlite3
 
 ### Node.js logs ###
 npm-debug.log*
