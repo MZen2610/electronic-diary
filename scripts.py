@@ -57,12 +57,12 @@ def create_commendation(child_name, subject_name):
             'Ты многое сделал, я это вижу!',
             'Теперь у тебя точно все получится!']
 
-        com = Commendation()
-        com.text = choice(praise_text)
-        com.created = lesson_subject.date
-        com.schoolkid = child
-        com.subject = lesson_subject.subject
-        com.teacher = lesson_subject.teacher
-        com.save()
+        Commendation.objects.create(text = choice(praise_text),
+                                    created=lesson_subject.date,
+                                    schoolkid=child,
+                                    subject=lesson_subject.subject,
+                                    teacher=lesson_subject.teacher
+                                    )
+
     except Schoolkid.DoesNotExist:
         print('Ученик не найден')
