@@ -65,7 +65,7 @@
 
 ## Удалить жалобы
 
-- В `shell` запустить процедуру `emove_chastisements(schoolkid_name)`
+- В `shell` запустить процедуру `remove_chastisements(schoolkid_name)`
   где:
     - `schoolkid_name` - имя фамилия ученика, которому требуется исправить оценки
 

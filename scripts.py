@@ -10,7 +10,7 @@ def fix_marks(child_name):
         print('Schoolkid not found')
 
 
-def emove_chastisements(child_name):
+def remove_chastisements(child_name):
     try:
         schoolkid = Schoolkid.objects.filter(full_name__contains=child_name).get()
         chastisements = Chastisement.objects.filter(schoolkid=schoolkid)
