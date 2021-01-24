@@ -24,6 +24,9 @@ def create_commendation(child_name, subject_name):
         child = Schoolkid.objects.filter(full_name__contains=child_name).get()
         lesson_subject = Lesson.objects.filter(year_of_study=child.year_of_study, group_letter=child.group_letter,
                                                subject__title=subject_name).order_by('-date').first()
+        if lesson_subject is None:
+            return print('Проверьте название урока')
+
 
         praise_text = [
             'Молодец!',
@@ -57,7 +60,7 @@ def create_commendation(child_name, subject_name):
             'Ты многое сделал, я это вижу!',
             'Теперь у тебя точно все получится!']
 
-        Commendation.objects.create(text = choice(praise_text),
+        Commendation.objects.create(text=choice(praise_text),
                                     created=lesson_subject.date,
                                     schoolkid=child,
                                     subject=lesson_subject.subject,
